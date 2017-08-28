@@ -8,9 +8,10 @@ public class VideoControl : MonoBehaviour {
 
 
     [SerializeField]
-    private AudioSource audioSource;
+    private GvrAudioSource audioSource;
 
-
+    public ParticleSystem particle;
+    public GameObject points;
 
     void Start () {
         videoPlayer = GetComponent<UnityEngine.Video.VideoPlayer> ();
@@ -19,37 +20,38 @@ public class VideoControl : MonoBehaviour {
         if (videoPlayer.clip != null) 
         {
             videoPlayer.EnableAudioTrack (0, true);
-            videoPlayer.SetTargetAudioSource(0, audioSource);
         }
     }
 
-    //Check if input keys have been pressed and call methods accordingly.
-    void Update(){
-        //Play or pause the video.
-        if (Input.GetKeyDown ("space")) 
+    private void Update()
+    {
+        if(!videoPlayer.isPlaying)
         {
-            if (videoPlayer.isPlaying)
-                videoPlayer.Pause ();
-            else
-                videoPlayer.Play();
-                audioSource.Play();
+            audioSource.Stop();
+            particle.Stop();
+            points.SetActive(true);
         }
-
     }
 
     public void Play()
     {
         videoPlayer.Play();
+        particle.Play();
+        audioSource.Play();
     }
 
     public void Pause()
     {
         videoPlayer.Pause();
+        particle.Pause();
+        audioSource.Pause();
     }
 
     public void Stop()
     {
         videoPlayer.Stop();
+        particle.Stop();
+        audioSource.Stop();
     }
 
     public void Restart()
